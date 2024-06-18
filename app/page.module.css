@@ -53,7 +53,7 @@
           font-size: 1.2rem;
           font-weight: 500;
           color: #fff;
-          background: #29845E;
+          background: #29845e;
           border: none;
           border-radius: 0.5rem;
           cursor: pointer;
@@ -67,10 +67,40 @@
             height: 1.2rem;
           }
           &:hover {
-            background: #66A63F;
+            background: #66a63f;
           }
         }
       }
+    }
+  }
+  .dropZone {
+    width: calc(100vw - 40px);
+    height: calc(100vh - 40px);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    backdrop-filter: blur(1px) saturate(180%);
+    -webkit-backdrop-filter: blur(1px) saturate(180%);
+    background-color: rgba(251, 251, 251, 0.56);
+    border: 1px solid rgba(255, 255, 255, 0.125);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-direction: column;
+    color: #909090;
+    margin: 20px;
+    border-radius: 30px;
+    border: 2px dashed #222;
+    display: none;
+
+    &.active {
+      display: flex;
+    }
+    .icon {
+      width: 3rem;
+      height: 3rem;
     }
   }
   .bg {
@@ -81,6 +111,9 @@
     left: 0;
     z-index: 0;
     overflow: hidden;
+    &.active {
+      border: 10px solid #476cee;
+    }
     &::before {
       --size: 100vw;
       content: "";
