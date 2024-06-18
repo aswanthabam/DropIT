@@ -1,0 +1,58 @@
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background-color: #fff;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  position: fixed;
+  width: 100%;
+  backdrop-filter: blur(2px) saturate(180%);
+  -webkit-backdrop-filter: blur(2px) saturate(180%);
+  background-color: rgba(234, 236, 238, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.125);
+  .container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    height: 100%;
+    .logo {
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+
+      .image {
+        height: 70%;
+        object-fit: cover;
+      }
+      .title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #222;
+      }
+    }
+
+    .menu {
+      display: flex;
+      gap: 1rem;
+
+      .link {
+        text-decoration: none;
+        color: #222;
+        font-size: 1.2rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        border-right: 1px solid black;
+        padding-right: 20px;
+        &:hover {
+          color: #29845e;
+        }
+      }
+    }
+  }
+}
