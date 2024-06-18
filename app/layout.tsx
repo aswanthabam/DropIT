@@ -6,8 +6,8 @@ import { Topbar } from "@/components/Topbar";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Easy Share",
-  description: "Share files easily with Easy Share",
+  title: "DropIT",
+  description: "Share files easily.",
 };
 
 export default function RootLayout({

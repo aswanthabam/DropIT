@@ -10,7 +10,7 @@
   width: 100%;
   backdrop-filter: blur(2px) saturate(180%);
   -webkit-backdrop-filter: blur(2px) saturate(180%);
-  background-color: rgba(234, 236, 238, 0.75);
+  background-color: rgba(234, 236, 238, 0.65);
   border: 1px solid rgba(255, 255, 255, 0.125);
   .container {
     width: 100%;
@@ -27,6 +27,7 @@
       gap: 1rem;
 
       .image {
+        width: auto;
         height: 70%;
         object-fit: cover;
       }
