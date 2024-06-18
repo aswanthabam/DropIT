@@ -39,20 +39,24 @@ export default function Share() {
     formData.append("file", file);
     formData.append("uploaded_by", name);
     formData.append("usage_limit", usageCount.toString());
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/file/upload`,
-      {
-        method: "POST",
-        body: formData,
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/file/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      console.log(response);
+      if (response.status == 200) {
+        const data = await response.json();
+        console.log(data);
+        if (data.status == "success") {
+          setCode(data.data.code);
+        }
       }
-    );
-    console.log(response);
-    if (response.status == 200) {
-      const data = await response.json();
-      console.log(data);
-      if (data.status == "success") {
-        setCode(data.data.code);
-      }
+    } catch (e) {
+      console.log(e);
     }
     document.getElementById("loader")?.classList.remove(styles.active);
   };
