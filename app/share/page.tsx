@@ -16,13 +16,21 @@ export default function Share() {
   const router = useRouter();
   useEffect(() => {
     console.log("Page loaded (SHARE)");
+    setCode(null);
+    setCopied(false);
+    setUsageCount(1);
     if (!file) {
       router.push("/");
     }
-    setFileIcon(`bi bi-filetype-${file?.type?.split("/")[1]}`);
+    var ty = file?.type?.split("/")[1];
+    if (ty?.includes("+")) {
+      ty = ty.split("+")[0];
+    } else if (ty == "x-zip-compressed") ty = "bi bi-file-zip";
+    if (ty == "jpeg") ty = "jpg";
+    setFileIcon(`bi bi-filetype-${ty}`);
     setFileSize(`${((file?.size || 0) / 1000000).toFixed(2)} MB`);
     console.log(fileIcon);
-  }, []);
+  }, [file]);
 
   const uploadFile = async () => {
     if (!file) return;
@@ -97,7 +105,7 @@ export default function Share() {
       {code != null ? (
         <div className={styles.content}>
           <div className={styles.codeContainer}>
-          <h1 className={styles.titleUnderlined}>Your Code</h1>
+            <h1 className={styles.titleUnderlined}>Your Code</h1>
             <h2
               onClick={() => {
                 navigator.clipboard.writeText(code);
