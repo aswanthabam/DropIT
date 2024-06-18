@@ -1,18 +1,9 @@
 {
-  "hosting": [
-    {
-      "site": "drop-it",
-      "public": ".out",
-      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
-      
-      "cleanUrls": true,
-      "trailingSlash": false,
-      "rewrites": [
-        {
-          "source": "/",
-          "destination": "/index.html"
-        }
-      ]
-    }
-  ]
+  "hosting": {
+    "site": "drop-it",
+    "public": "build",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "cleanUrls": true,
+    "trailingSlash": false
+  }
 }
