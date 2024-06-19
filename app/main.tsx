@@ -1,13 +1,12 @@
 "use client";
-import { FileContext, FileProvider } from "@/context/FileContext";
+import { FileProvider } from "@/context/FileContext";
 import "./globals.css";
 import styles from "./main.module.css";
 import { useRouter } from "next/navigation";
-import { use, useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import bgIllustration from "../public/bg-illustration.svg";
 import Image from "next/image";
 import {
-  LoaderContext,
   LoaderContextType,
   LoaderProvider,
 } from "@/context/LoaderContext";
@@ -40,7 +39,8 @@ export default function MainContainer({
           setLoader!({ text: "", visible: false });
         } else {
           var data = await res.json();
-          if (data.data.status != "success" || data.data.data.status == false) {
+          console.log(data);
+          if (data.status != "success" || data.data.status == false) {
             setLoader!({ text: "", visible: false });
             router.push("/offline");
           } else {
