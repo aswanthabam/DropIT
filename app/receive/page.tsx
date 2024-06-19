@@ -30,7 +30,7 @@ export default function Share() {
     inputRef.current?.focus();
     setCode("");
     setLoader!({ text: "", visible: false });
-  }, []);
+  }, [setLoader]);
 
   useEffect(() => {
     if (fileInfo == null) {
@@ -253,7 +253,7 @@ export default function Share() {
                 }}
               />
               <p className={styles.info}>
-                Enter the code for downloading the file. Don't know how to get
+                Enter the code for downloading the file. Dont know how to get
                 the code?{" "}
                 <Link href={"/#how-it-works"}>
                   Click here to know how it works
