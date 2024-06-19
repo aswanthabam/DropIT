@@ -5,6 +5,7 @@ import MainContainer from "../main";
 import { FileContext } from "@/context/FileContext";
 import { useRouter } from "next/navigation";
 import { LoaderContext, LoaderContextType } from "@/context/LoaderContext";
+import { PopupContext, showPopup } from "@/context/PopupContext";
 
 export default function Share() {
   const { file, setFile } = useContext(FileContext);
@@ -14,14 +15,15 @@ export default function Share() {
   const [name, setName] = useState("");
   const [code, setCode] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
-  const {loader, setLoader} = useContext(LoaderContext);
+  const { setLoader } = useContext(LoaderContext);
   const router = useRouter();
+  const { setPopup } = useContext(PopupContext);
   useEffect(() => {
     console.log("Page loaded (SHARE)");
     setCode(null);
     setCopied(false);
     setUsageCount(1);
-    setLoader!({ text: "", visible: false }); 
+    setLoader!({ text: "", visible: false });
     if (!file) {
       router.push("/");
     }
@@ -56,12 +58,18 @@ export default function Share() {
         console.log(data);
         if (data.status == "success") {
           setCode(data.data.code);
+        } else {
+          showPopup(setPopup!, data.message, "bi bi-x-circle", 3000);
         }
+      } else {
+        showPopup(setPopup!, "Failed to upload file", "bi bi-x-circle", 3000);
       }
     } catch (e) {
-      console.log(e);
+      console.error(e);
+      showPopup(setPopup!, "Failed to upload file", "bi bi-x-circle", 3000);
     }
     setLoader!({ text: "", visible: false });
+    showPopup(setPopup!, "File uploaded successfully", "bi bi-check-circle", 3000);
   };
 
   return (
