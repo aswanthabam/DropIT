@@ -123,7 +123,7 @@ export default function MainContainer({
                 d="M70 183.5V279.525C70 294.93 91.655 298.315 96.356 283.645L143.151 137.618C145.942 128.906 139.443 119.998 130.295 119.998H83.5C79.9101 119.998 77 117.088 77 113.498V17.9919C77 2.54976 55.2666 -0.794556 50.6245 13.9335L4.76133 159.442C2.01928 168.141 8.5154 177 17.6369 177H63.5C67.0899 177 70 179.91 70 183.5Z"
                 fill="url(#paint0_linear_13_12)"
                 stroke="url(#paint1_linear_13_12)"
-                stroke-width="7"
+                strokeWidth="7"
                 className="svg-elem-1"
               ></path>
               <defs>
@@ -135,8 +135,8 @@ export default function MainContainer({
                   y2="343.5"
                   gradientUnits="userSpaceOnUse"
                 >
-                  <stop stop-color="#29845E"></stop>
-                  <stop offset="1" stop-color="#66A63F"></stop>
+                  <stop stopColor="#29845E"></stop>
+                  <stop offset="1" stopColor="#66A63F"></stop>
                 </linearGradient>
                 <linearGradient
                   id="paint1_linear_13_12"
@@ -146,8 +146,8 @@ export default function MainContainer({
                   y2="238.5"
                   gradientUnits="userSpaceOnUse"
                 >
-                  <stop stop-color="#476CEE"></stop>
-                  <stop offset="1" stop-color="#293D88"></stop>
+                  <stop stopColor="#476CEE"></stop>
+                  <stop offset="1" stopColor="#293D88"></stop>
                 </linearGradient>
               </defs>
             </svg>

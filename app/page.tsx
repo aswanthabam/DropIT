@@ -35,7 +35,9 @@ export default function Home() {
             </svg>
             Send a File
           </button>
-          <button className={styles.button}>Receive</button>
+          <button onClick={()=>{
+            router.push("/receive");
+          }} className={styles.button}>Receive</button>
           <input  
             ref={filePicRef}
             onChange={(e) => {
