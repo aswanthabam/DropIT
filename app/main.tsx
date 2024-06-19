@@ -7,7 +7,11 @@ import { useEffect, useState } from "react";
 import bgIllustration from "../public/bg-illustration.svg";
 import Image from "next/image";
 import { LoaderContextType, LoaderProvider } from "@/context/LoaderContext";
-import { PopupContextType, PopupProvider } from "@/context/PopupContext";
+import {
+  PopupContextType,
+  PopupProvider,
+  showPopup,
+} from "@/context/PopupContext";
 
 export default function MainContainer({
   children,
@@ -90,6 +94,11 @@ export default function MainContainer({
     setLoader!({ text: "Loading...", visible: true });
     mainDragEnd();
     if (event.dataTransfer.files && event.dataTransfer.files.length > 0) {
+      if (event.dataTransfer.files[0].size > 50000000) {
+        setLoader!({ text: "", visible: false });
+        showPopup(setPopup!, "File size is too large (Maximum 50 MB)", "bi bi-x-circle", 2000);
+        return;
+      }
       setFile!(event.dataTransfer.files[0]);
       router.push("/share/");
       setLoader!({ text: "", visible: false });
