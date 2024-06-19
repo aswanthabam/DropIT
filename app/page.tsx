@@ -1,13 +1,17 @@
 "use client";
-import { useEffect } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import styles from "./page.module.css";
 import MainContainer from "./main";
+import { FileContext } from "@/context/FileContext";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   useEffect(() => {
     console.log("Page loaded(HOME)");
   }, []);
-
+  const router = useRouter();
+  const fileContext = useContext(FileContext);
+  const filePicRef = useRef<HTMLInputElement>(null);
   return (
     <MainContainer>
       <div className={styles.titleSection}>
@@ -18,7 +22,9 @@ export default function Home() {
           Experience effortless file sharing today!
         </p>
         <div className={styles.buttonContainer}>
-          <button className={styles.button}>
+          <button onClick={()=>{
+            filePicRef.current?.click();
+          }} className={styles.button}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
@@ -30,6 +36,18 @@ export default function Home() {
             Send a File
           </button>
           <button className={styles.button}>Receive</button>
+          <input  
+            ref={filePicRef}
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) {
+                fileContext.setFile!(file);
+                router.push("/share");
+              }
+            }}
+            type="file"
+            hidden
+          />
         </div>
       </div>
     </MainContainer>
