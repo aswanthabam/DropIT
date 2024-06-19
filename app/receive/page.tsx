@@ -6,9 +6,10 @@ import { FileContext } from "@/context/FileContext";
 import { useRouter } from "next/navigation";
 import { LoaderContext, LoaderContextType } from "@/context/LoaderContext";
 import Link from "next/link";
+import { PopupContext, showPopup } from "@/context/PopupContext";
 
 export default function Share() {
-  // const { file, setFile } = useContext(FileContext);
+  const { setPopup } = useContext(PopupContext);
   const [fileIcon, setFileIcon] = useState("bi bi-filetype-");
   const [fileSize, setFileSize] = useState("0MB");
   const [code, setCode] = useState<string>("");
@@ -61,7 +62,6 @@ export default function Share() {
     }
   }, [code]);
   const onCodeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("CUR: ", event.target.value);
     if (event.target.value[1] == "-") {
       event.target.value =
         event.target.value.slice(0, 1) + event.target.value.slice(2);
@@ -82,7 +82,6 @@ export default function Share() {
         event.target.value = code;
       }
     }
-    console.log("AFTER: ", event.target.value);
     if (
       event.target.value.length > code.length + 1 &&
       !/^[A-Z]\d{0,6}$/.test(event.target.value)
@@ -101,7 +100,6 @@ export default function Share() {
           [i != 0 ? i + 1 : i].classList.add(styles.inactive);
       }
     }
-    console.log("CODE: ", code);
   };
   const viewFileInfo = async () => {
     if (code.length != 7) {
@@ -122,12 +120,9 @@ export default function Share() {
         }
       );
       const data = await response.json();
-      console.log(data);
       if (data.status != "success") {
-        setLoader!({ text: data.message, visible: true });
-        setTimeout(() => {
-          setLoader!({ text: "", visible: false });
-        }, 2000);
+        setLoader!({ text: data.message, visible: false });
+        showPopup(setPopup!, data.message, "bi bi-exclamation-triangle");
       } else {
         setFileInfo({
           name: data.data.file_name,
@@ -137,12 +132,11 @@ export default function Share() {
           fileUrl: data.data.file_url,
         });
         setLoader!({ text: "", visible: false });
+        showPopup(setPopup!, "File Found", "bi bi-check2");
       }
     } catch (e) {
-      setLoader!({ text: "An error occured", visible: true });
-      setTimeout(() => {
-        setLoader!({ text: "", visible: false });
-      }, 2000);
+      setLoader!({ text: "An error occured", visible: false });
+      showPopup(setPopup!, "An error occured", "bi bi-exclamation-triangle");
     }
   };
 
