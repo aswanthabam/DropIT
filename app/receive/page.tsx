@@ -144,7 +144,7 @@ export default function Share() {
     if (fileInfo == null) {
       return;
     }
-    var url = `${process.env.NEXT_PUBLIC_API_URL}${fileInfo.fileUrl}`;
+    var url = `${process.env.NEXT_PUBLIC_DOWNLOAD_URL}${fileInfo.fileUrl}`;
     setDownloading(true);
     setCode("");
     fetch(url)
