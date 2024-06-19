@@ -23,7 +23,6 @@ export default function MainContainer({
     visible: true,
   });
   useEffect(() => {
-    setLoader!({ text: "", visible: false });
     document.body.style.setProperty("--x", "0px");
     document.body.style.setProperty("--y", "0px");
     document.body.style.setProperty(
@@ -34,6 +33,25 @@ export default function MainContainer({
         rgba(175, 224, 228, 1)
       )`
     );
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/server/status`)
+      .then(async (res) => {
+        if (res.status != 200) {
+          router.push("/offline");
+          setLoader!({ text: "", visible: false });
+        } else {
+          var data = await res.json();
+          if (data.data.status != "success" || data.data.data.status == false) {
+            setLoader!({ text: "", visible: false });
+            router.push("/offline");
+          } else {
+            setLoader!({ text: "", visible: false });
+          }
+        }
+      })
+      .catch(() => {
+        router.push("/offline");
+        setLoader!({ text: "", visible: false });
+      });
   }, []);
   const [file, setFile] = useState<File | null>(null);
   const mainMouseMove = (event: React.MouseEvent) => {
