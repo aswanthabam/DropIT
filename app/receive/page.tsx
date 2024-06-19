@@ -127,7 +127,7 @@ export default function Share() {
         setFileInfo({
           name: data.data.file_name,
           type: data.data.content_type,
-          size: 0,
+          size: data.data.file_size,
           uploadedBy: data.data.uploaded_by,
           fileUrl: data.data.file_url,
         });
@@ -144,7 +144,7 @@ export default function Share() {
     if (fileInfo == null) {
       return;
     }
-    var url = `${process.env.NEXT_PUBLIC_API_URL}${fileInfo.fileUrl}`;
+    var url = `${process.env.NEXT_PUBLIC_DOWNLOAD_URL}${fileInfo.fileUrl}`;
     setDownloading(true);
     setCode("");
     fetch(url)
@@ -157,12 +157,15 @@ export default function Share() {
           throw new Error("Content-Length header is missing");
         }
         const total = parseInt(contentLength, 10);
+        console.log("Total size:", total);
         let loaded = 0;
         const reader = response.body!.getReader();
         const stream = new ReadableStream({
           start(controller) {
             function push() {
               reader.read().then(({ done, value }) => {
+                console.log("Read chunk:", value);
+                console.log("Done:", done);
                 if (done) {
                   controller.close();
                   return;
@@ -176,11 +179,12 @@ export default function Share() {
             push();
           },
         });
-
+        console.log("Stream:", stream);
         return new Response(stream);
       })
       .then((response) => response.blob())
       .then((blob) => {
+        console.log("Download complete:", blob);
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.style.display = "none";

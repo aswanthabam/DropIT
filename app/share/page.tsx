@@ -6,6 +6,7 @@ import { FileContext } from "@/context/FileContext";
 import { useRouter } from "next/navigation";
 import { LoaderContext, LoaderContextType } from "@/context/LoaderContext";
 import { PopupContext, showPopup } from "@/context/PopupContext";
+import { off } from "process";
 
 export default function Share() {
   const { file, setFile } = useContext(FileContext);
@@ -34,42 +35,139 @@ export default function Share() {
     if (ty == "jpeg") ty = "jpg";
     setFileIcon(`bi bi-filetype-${ty}`);
     setFileSize(`${((file?.size || 0) / 1000000).toFixed(2)} MB`);
-    console.log(fileIcon);
   }, [file]);
 
+  const clearFile = () => {
+    setCode(null);
+    setCopied(false);
+    setFile!(null);
+    setName("");
+    setUsageCount(1);
+    setFileSize("0MB");
+    setFileIcon("bi bi-filetype-");
+    router.push("/");
+  };
   const uploadFile = async () => {
     if (!file) return;
-    setLoader!({ text: "Uploading ...", visible: true });
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("uploaded_by", name);
-    formData.append("usage_limit", usageCount.toString());
+    var fileSize = file.size;
+    var createUrl = `${process.env.NEXT_PUBLIC_API_URL}/file/create`;
+    var buffers = [];
+    var fileId = null;
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/file/upload`,
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-      console.log(response);
-      if (response.status == 200) {
-        const data = await response.json();
-        console.log(data);
-        if (data.status == "success") {
-          setCode(data.data.code);
-        } else {
-          showPopup(setPopup!, data.message, "bi bi-x-circle", 3000);
-        }
-      } else {
+      const createResponse = await fetch(createUrl, {
+        method: "POST",
+        body: new URLSearchParams({
+          file_name: file.name,
+          file_size: fileSize.toString(),
+          uploaded_by: name,
+          content_type: file.type,
+          usage_limit: usageCount.toString(),
+        }),
+      });
+      if (createResponse.status != 200) {
         showPopup(setPopup!, "Failed to upload file", "bi bi-x-circle", 3000);
+        return;
+      }
+      const createData = await createResponse.json();
+      if (createData.status == "success") {
+        setCode(createData.data.code);
+        fileId = createData.data.file_id;
+        buffers = createData.data.buffers;
+      } else {
+        showPopup(setPopup!, createData.message, "bi bi-x-circle", 3000);
+        return;
       }
     } catch (e) {
       console.error(e);
       showPopup(setPopup!, "Failed to upload file", "bi bi-x-circle", 3000);
+      return;
     }
-    setLoader!({ text: "", visible: false });
-    showPopup(setPopup!, "File uploaded successfully", "bi bi-check-circle", 3000);
+    var uploadUrl = `${process.env.NEXT_PUBLIC_API_URL}/file/upload`;
+    var offset = 0;
+    for (var i = 0; i < buffers.length; i++) {
+      var chunk = buffers[i];
+      var bytes = await getFileBytes(offset, chunk);
+      if (bytes == null) {
+        showPopup(
+          setPopup!,
+          "Something went wrong while uploading.",
+          "bi bi-check-circle",
+          3000
+        );
+        setLoader!({ text: "", visible: false });
+        clearFile();
+        return;
+      }
+      var formData = new FormData();
+      if (!fileId) {
+        showPopup(setPopup!, "Failed to upload file", "bi bi-x-circle", 3000);
+        clearFile();
+        return;
+      }
+      formData.append("bufferFile", new Blob([bytes!]));
+      formData.append("file_id", fileId!.toString());
+      formData.append("buffer_index", i.toString());
+      try {
+        const uploadResponse = await fetch(uploadUrl, {
+          method: "POST",
+          body: formData,
+        });
+        if (uploadResponse.status != 200) {
+          showPopup(setPopup!, "Failed to upload file", "bi bi-x-circle", 3000);
+          clearFile();
+          return;
+        }
+        const uploadData = await uploadResponse.json();
+        if (uploadData.status != "success") {
+          showPopup(setPopup!, uploadData.message, "bi bi-x-circle", 3000);
+          clearFile();
+          return;
+        }
+        if (uploadData.data.file_id != fileId) {
+          showPopup(setPopup!, "Failed to upload file", "bi bi-x-circle", 3000);
+          clearFile();
+          return;
+        }
+        if (uploadData.data.next_buffer != i + 1) {
+          showPopup(setPopup!, "Failed to upload file", "bi bi-x-circle", 3000);
+          clearFile();
+          return;
+        }
+        offset += chunk;
+      } catch (e) {
+        console.error(e);
+        showPopup(setPopup!, "Failed to upload file", "bi bi-x-circle", 3000);
+        clearFile();
+        return;
+      }
+    }
+  };
+
+  const getFileBytes: (
+    offset: number,
+    chunkSize: number
+  ) => Promise<Uint8Array | null> = (offset: number, chunkSize: number) => {
+    return new Promise<Uint8Array | null>((resolve, reject) => {
+      if (!file) {
+        reject("No file selected.");
+        return;
+      }
+      if (offset >= file.size) {
+        resolve(null);
+        return;
+      }
+      const chunk = file.slice(offset, offset + chunkSize);
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const result = event.target!.result;
+        const bytes = new Uint8Array(result as ArrayBuffer);
+        resolve(bytes);
+      };
+      reader.onerror = (error) => {
+        reject("Error reading file: " + error);
+      };
+      reader.readAsArrayBuffer(chunk);
+    });
   };
 
   return (
@@ -160,7 +258,15 @@ export default function Share() {
                 </p>
               </div>
               <div className={styles.buttonContainer}>
-                <button onClick={uploadFile} className={styles.button}>
+                <button
+                  onClick={() => {
+                    setLoader!({ text: "Uploading ...", visible: true });
+                    uploadFile().then(() => {
+                      setLoader!({ text: "", visible: false });
+                    });
+                  }}
+                  className={styles.button}
+                >
                   Send It
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
