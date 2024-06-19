@@ -6,7 +6,7 @@
   flex-direction: column;
   .content {
     width: calc(100% - 40px);
-    height: calc(100% - 200px);
+    height: calc(100% - 100px);
     margin: 20px;
     margin-bottom: 20px;
     margin-top: 110px;
@@ -17,75 +17,105 @@
     border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.125);
 
-    .codeContainer {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      height: 100%;
-      gap: 2rem;
-      .titleUnderlined {
-        display: block;
-        position: relative;
-
-        &::after {
-          content: "";
-          position: absolute;
-          width: 70%;
-          height: 5px;
-          background: #29845E;
-          bottom: -5px;
-          left: 50%;
-          transform: translateX(-50%);
-          border-radius: 20px;
-          filter: blur(1px);
-        }
-      }
-      .info {
-        font-size: 1.2rem;
-        font-weight: 500;
-        color: #333;
-        width: 50%;
-        text-align: center;
-      }
-      .code {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        font-size: 1.5rem;
-        font-weight: 900;
-        color: #333;
-        background: #70ffc1;
-        padding: 15px 20px;
-        border-radius: 10px;
-        cursor: pointer;
-
-        .copyIcon {
-          width: 30px;
-          height: 30px;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          font-weight: 1200;
-          fill: #333;
-          &:hover {
-            fill: #29845e;
-          }
-        
-        }
-      }
-      .info {
-        font-size: 1rem;
-        font-weight: 400;
-        color: #666;
-      }
-    }
-
     .grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 1rem;
-      height: calc(100% - 5rem);
+      height: calc(100% - 1rem);
+      .codeContainer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        height: 100%;
+        gap: 2rem;
+        .codeInfo {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          gap: 2rem;
+          .buttonContainer {
+            margin: 0 20px;
+            height: 50px;
+            display: flex;
+            align-items: start;
+            justify-content: end;
+            .button {
+              width: auto;
+            }
+          }
+        }
+        .titleUnderlined {
+          display: block;
+          position: relative;
+
+          &::after {
+            content: "";
+            position: absolute;
+            width: 70%;
+            height: 5px;
+            background: #29845e;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 20px;
+            filter: blur(1px);
+          }
+        }
+        .info {
+          font-size: 1.2rem;
+          font-weight: 500;
+          color: #333;
+          width: 50%;
+          text-align: center;
+        }
+        .code {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+          font-size: 1.5rem;
+          font-weight: 900;
+          color: #333;
+          background: #70ffc1;
+          padding: 15px 20px;
+          border-radius: 10px;
+          cursor: pointer;
+
+          .codeChar {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #333;
+            background: #70ffc1;
+            padding: 5px 10px;
+            border-radius: 10px;
+            cursor: pointer;
+
+            /* &:hover {
+              background: #66a63f;
+            } */
+
+            &.divider {
+              background: none;
+              color: #0f432e;
+              font-weight: 900;
+              font-size: 2rem;
+              padding: 0;
+            }
+
+            &.inactive {
+              color: #636363;
+            }
+          }
+        }
+        .info {
+          font-size: 1rem;
+          font-weight: 400;
+          color: #666;
+        }
+      }
+
       .file {
         display: flex;
         align-items: center;
@@ -97,7 +127,14 @@
         border-radius: 0.5rem;
         background: #f1f1f182;
         margin: 1.5rem;
-        overflow: hidden;
+
+        .previewIcon {
+          font-size: 4rem;
+          color: #999;
+        }
+        .previewText {
+          color: #999;
+        }
         .icon {
           font-size: 4rem;
         }
@@ -107,12 +144,19 @@
           color: #333;
           text-align: center;
           word-break: break-all;
-          
         }
         .size {
           font-size: 1rem;
           font-weight: 400;
           color: #666;
+        }
+
+        .uploadedBy {
+          .name {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #333;
+          }
         }
       }
       .form {

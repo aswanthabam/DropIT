@@ -6,6 +6,14 @@
   width: 5px;
 }
 
+a {
+  text-decoration: none;
+  color: #29845e;
+
+  &:hover {
+    color: #66a63f;
+  }
+}
 /* Track */
 ::-webkit-scrollbar-track {
   background: #f1f1f120;

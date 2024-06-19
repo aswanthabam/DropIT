@@ -4,6 +4,7 @@ import styles from "./page.module.css";
 import MainContainer from "../main";
 import { FileContext } from "@/context/FileContext";
 import { useRouter } from "next/navigation";
+import { LoaderContext, LoaderContextType } from "@/context/LoaderContext";
 
 export default function Share() {
   const { file, setFile } = useContext(FileContext);
@@ -13,12 +14,14 @@ export default function Share() {
   const [name, setName] = useState("");
   const [code, setCode] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const {loader, setLoader} = useContext(LoaderContext);
   const router = useRouter();
   useEffect(() => {
     console.log("Page loaded (SHARE)");
     setCode(null);
     setCopied(false);
     setUsageCount(1);
+    setLoader!({ text: "", visible: false }); 
     if (!file) {
       router.push("/");
     }
@@ -34,7 +37,7 @@ export default function Share() {
 
   const uploadFile = async () => {
     if (!file) return;
-    document.getElementById("loader")?.classList.add(styles.active);
+    setLoader!({ text: "Uploading ...", visible: true });
     const formData = new FormData();
     formData.append("file", file);
     formData.append("uploaded_by", name);
@@ -58,54 +61,11 @@ export default function Share() {
     } catch (e) {
       console.log(e);
     }
-    document.getElementById("loader")?.classList.remove(styles.active);
+    setLoader!({ text: "", visible: false });
   };
 
   return (
     <div className={styles.share}>
-      <div id="loader" className={styles.loader}>
-        <svg
-          width="148"
-          height="297"
-          viewBox="0 0 148 297"
-          className={styles.svg}
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M70 183.5V279.525C70 294.93 91.655 298.315 96.356 283.645L143.151 137.618C145.942 128.906 139.443 119.998 130.295 119.998H83.5C79.9101 119.998 77 117.088 77 113.498V17.9919C77 2.54976 55.2666 -0.794556 50.6245 13.9335L4.76133 159.442C2.01928 168.141 8.5154 177 17.6369 177H63.5C67.0899 177 70 179.91 70 183.5Z"
-            fill="url(#paint0_linear_13_12)"
-            stroke="url(#paint1_linear_13_12)"
-            stroke-width="7"
-            className="svg-elem-1"
-          ></path>
-          <defs>
-            <linearGradient
-              id="paint0_linear_13_12"
-              x1="74"
-              y1="-47"
-              x2="74"
-              y2="343.5"
-              gradientUnits="userSpaceOnUse"
-            >
-              <stop stop-color="#29845E"></stop>
-              <stop offset="1" stop-color="#66A63F"></stop>
-            </linearGradient>
-            <linearGradient
-              id="paint1_linear_13_12"
-              x1="4"
-              y1="79.5"
-              x2="144"
-              y2="238.5"
-              gradientUnits="userSpaceOnUse"
-            >
-              <stop stop-color="#476CEE"></stop>
-              <stop offset="1" stop-color="#293D88"></stop>
-            </linearGradient>
-          </defs>
-        </svg>
-        <h2 className={styles.title}>Uploading ...</h2>
-      </div>
       {code != null ? (
         <div className={styles.content}>
           <div className={styles.codeContainer}>
