@@ -103,7 +103,7 @@ export default function MainContainer({
     setLoader!({ text: "Loading...", visible: true });
     mainDragEnd();
     if (event.dataTransfer.files && event.dataTransfer.files.length > 0) {
-      if (event.dataTransfer.files[0].size > 50000000) {
+      if (event.dataTransfer.files[0].size > (50 * 1024 * 1024)) {
         setLoader!({ text: "", visible: false });
         showPopup(
           setPopup!,
