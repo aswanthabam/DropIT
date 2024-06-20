@@ -1,10 +1,8 @@
 "use client";
 import { use, useContext, useEffect, useRef, useState } from "react";
 import styles from "./page.module.css";
-import MainContainer from "../main";
-import { FileContext } from "@/context/FileContext";
 import { useRouter } from "next/navigation";
-import { LoaderContext, LoaderContextType } from "@/context/LoaderContext";
+import { LoaderContext } from "@/context/LoaderContext";
 import Link from "next/link";
 import { PopupContext, showPopup } from "@/context/PopupContext";
 

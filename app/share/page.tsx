@@ -1,12 +1,10 @@
 "use client";
 import { useContext, useEffect, useState } from "react";
 import styles from "./page.module.css";
-import MainContainer from "../main";
 import { FileContext } from "@/context/FileContext";
 import { useRouter } from "next/navigation";
-import { LoaderContext, LoaderContextType } from "@/context/LoaderContext";
+import { LoaderContext } from "@/context/LoaderContext";
 import { PopupContext, showPopup } from "@/context/PopupContext";
-import { off } from "process";
 
 export default function Share() {
   const { file, setFile } = useContext(FileContext);

@@ -13,7 +13,6 @@ export default function Home() {
   const fileContext = useContext(FileContext);
   const filePicRef = useRef<HTMLInputElement>(null);
   return (
-    <MainContainer>
       <div className={styles.titleSection}>
         <h1 className={styles.title}>Instant File Sharing</h1>
         <p className={styles.description}>
@@ -52,6 +51,5 @@ export default function Home() {
           />
         </div>
       </div>
-    </MainContainer>
   );
 }
