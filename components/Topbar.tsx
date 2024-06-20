@@ -3,12 +3,21 @@ import Link from "next/link";
 import styles from "./Topbar.module.css";
 import icon from "../public/icon.svg";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 export function Topbar() {
   const router = useRouter();
   const menuRef = useRef<HTMLDivElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const [locChange, setLocChange] = useState(false);
+  useEffect(() => {
+    if (menuOpen) {
+      menuRef.current?.classList.remove(styles.open);
+      setMenuOpen(false);
+    }
+  }, [pathname, locChange]);
+
   const openMenu = () => {
     menuRef.current?.classList.toggle(styles.open);
     setMenuOpen(!menuOpen);
@@ -41,13 +50,31 @@ export function Topbar() {
           </svg>
         </div>
         <div ref={menuRef} className={styles.menu}>
-          <Link className={styles.link} href="product">
+          <Link
+            onClick={() => {
+              setLocChange(!locChange);
+            }}
+            className={styles.link}
+            href="/#how-it-works"
+          >
             How It Works
           </Link>
-          <Link className={styles.link} href="product">
+          <Link
+            onClick={() => {
+              setLocChange(!locChange);
+            }}
+            className={styles.link}
+            href="/#contact"
+          >
             Contact
           </Link>
-          <Link className={styles.link} href="product">
+          <Link
+            onClick={() => {
+              setLocChange(!locChange);
+            }}
+            className={styles.link}
+            href="/#faq"
+          >
             FAQ
           </Link>
         </div>
