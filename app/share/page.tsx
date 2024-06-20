@@ -178,6 +178,7 @@ export default function Share() {
               onClick={() => {
                 navigator.clipboard.writeText(code);
                 setCopied(true);
+                showPopup(setPopup!, "Copied", "bi bi-check-circle", 2000);
                 setTimeout(() => {
                   setCopied(false);
                 }, 2000);
