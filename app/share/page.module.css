@@ -98,6 +98,7 @@
         background: #f1f1f182;
         margin: 1.5rem;
         overflow: hidden;
+        text-align: center;
         .icon {
           font-size: 4rem;
         }
