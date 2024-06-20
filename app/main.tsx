@@ -29,6 +29,7 @@ export default function MainContainer({
     icon: "bi bi-info",
   });
   const [statusLoaded, setStatusLoaded] = useState(false);
+  
   useEffect(() => {
     console.log("Page loaded (MAIN)", process.env.NODE_ENV);
     document.body.style.setProperty("--x", "0px");

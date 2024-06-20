@@ -195,3 +195,41 @@
     }
   }
 }
+
+@media only screen and (max-width: 728px) {
+  .share {
+    justify-content: start;
+    height: fit-content;
+    .content {
+      height: auto;
+      margin-top: 100px;
+      margin-bottom: 20px;
+      .codeContainer {
+        .info {
+          width: 100%;
+        }
+
+        .code {
+          cursor: auto;
+        }
+      }
+
+      .grid {
+        height: auto;
+        margin-top: 10px;
+        grid-template-columns: 1fr;
+        .file {
+          margin: 0;
+          height: fit-content;
+        }
+        .form {
+          height: fit-content;
+        }
+      }
+    }
+    .buttonContainer {
+      width: 100%;
+      margin-top: 20px;
+    }
+  }
+}

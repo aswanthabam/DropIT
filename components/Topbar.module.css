@@ -38,7 +38,9 @@
         color: #222;
       }
     }
-
+    .menuIcon {
+      display: none;
+    }
     .menu {
       display: flex;
       gap: 1rem;
@@ -53,6 +55,44 @@
         padding-right: 20px;
         &:hover {
           color: #29845e;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 728px) {
+  .topbar {
+    padding: 10px 20px;
+    .container {
+      .menuIcon {
+        display: block;
+        .icon {
+          width: 30px;
+          height: 30px;
+        }
+      }
+      .menu {
+        position: fixed;
+        top: 70px;
+        overflow: hidden;
+        left: 0;
+        display: flex;
+        z-index: 9;
+        background: #6edbae;
+        flex-direction: column;
+        width: 100%;
+        height: 0;
+        padding: 0;
+        align-items: center;
+
+        .link {
+          border-right: none;
+          padding: 10px 0;
+        }
+        &.open {
+          height: auto;
+          padding: 30px 20px;
         }
       }
     }
