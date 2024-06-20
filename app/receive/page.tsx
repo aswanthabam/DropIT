@@ -6,6 +6,7 @@ import Link from "next/link";
 import { PopupContext, showPopup } from "@/context/PopupContext";
 
 type ProgressType = {
+  buffering: boolean;
   percent: number;
   total: number;
   loaded: number;
@@ -19,9 +20,12 @@ const formatBytes = (bytes: number): string => {
 
 const progressBytes = (progress: ProgressType) => {
   const sizes = ["KB", "MB"];
+  if (progress.total <= 1024) {
+    return `${progress.loaded} / ${progress.total} B`;
+  }
   const i = Math.floor(Math.log(progress.total) / Math.log(1024));
   return `${formatBytes(progress.loaded)} / ${formatBytes(progress.total)} ${
-    sizes[i - 1]
+    i == 1 || i == 2 ? sizes[i - 1] : sizes[0]
   }`;
 };
 
@@ -35,6 +39,7 @@ export default function Share() {
   const [fileInfo, setFileInfo] = useState<FileInfo | null>(null);
   const [downloading, setDownloading] = useState(false);
   const [progress, setProgress] = useState<ProgressType>({
+    buffering: false,
     percent: 0,
     total: 0,
     loaded: 0,
@@ -166,6 +171,7 @@ export default function Share() {
     }
     var url = `${process.env.NEXT_PUBLIC_DOWNLOAD_URL}${fileInfo.fileUrl}`;
     setDownloading(true);
+    setProgress({ buffering: true, percent: 0, total: 0, loaded: 0 });
     setCode("");
     fetch(url)
       .then((response) => {
@@ -178,7 +184,7 @@ export default function Share() {
         }
         const total = parseInt(contentLength, 10);
         let loaded = 0;
-        setProgress({ percent: 0, total, loaded });
+        setProgress({ buffering: false, percent: 0, total, loaded });
         showPopup(setPopup!, "Downloading ...", "bi bi-download", 1000);
         const reader = response.body!.getReader();
         const stream = new ReadableStream({
@@ -190,7 +196,12 @@ export default function Share() {
                   return;
                 }
                 loaded += value.length;
-                setProgress({ percent: (loaded / total) * 100, total, loaded });
+                setProgress({
+                  buffering: false,
+                  percent: (loaded / total) * 100,
+                  total,
+                  loaded,
+                });
                 controller.enqueue(value);
                 push();
               });
@@ -203,6 +214,7 @@ export default function Share() {
       })
       .then((response) => response.blob())
       .then((blob) => {
+        setProgress({ ...progress, buffering: true });
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.style.display = "none";
@@ -310,7 +322,7 @@ export default function Share() {
                   <div className={styles.progressContainer}>
                     <progress
                       className={styles.progress}
-                      value={progress.loaded}
+                      value={progress.buffering ? undefined : progress.loaded}
                       max={progress.total}
                     ></progress>
                     <span className={styles.progressText}>
