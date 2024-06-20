@@ -166,6 +166,7 @@
         }
         .type {
           text-align: center;
+          word-break: break-all;
         }
         .size {
           font-size: 1rem;
