@@ -42,6 +42,7 @@ export default function MainContainer({
       )`
     );
     if (!statusLoaded) {
+      setLoader!({ text: "Awaking Server", visible: true });
       fetch(`${process.env.NEXT_PUBLIC_API_URL}/server/status`)
         .then(async (res) => {
           setStatusLoaded(true);
@@ -55,6 +56,9 @@ export default function MainContainer({
               setLoader!({ text: "", visible: false });
               router.push("/offline");
             } else {
+              if (window.location.pathname.includes("offline")) {
+                router.push("/");
+              }
               setLoader!({ text: "", visible: false });
             }
           }
