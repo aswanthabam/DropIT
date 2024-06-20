@@ -208,6 +208,10 @@
         .info {
           width: 100%;
         }
+
+        .code {
+          cursor: auto;
+        }
       }
 
       .grid {

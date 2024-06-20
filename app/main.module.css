@@ -12,7 +12,7 @@
     padding: 1rem;
     bottom: 0;
     margin: 1rem;
-    left: 50%;
+    left: calc(50% - 1rem);
     transform: translateX(-50%);
     backdrop-filter: blur(14px) saturate(180%);
     -webkit-backdrop-filter: blur(14px) saturate(180%);
@@ -223,6 +223,9 @@
 
 @media only screen and (max-width: 728px) {
   .main {
+    .popup {
+      max-width: calc(100% - 3rem);
+    }
     .bg {
       background-size: 190%;
     }

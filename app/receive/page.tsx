@@ -237,7 +237,7 @@ export default function Share() {
       });
   };
   return (
-    <div className={styles.share}>
+    <div className={styles.receive}>
       <div className={styles.content}>
         <div className={styles.grid}>
           <div className={styles.codeContainer}>
