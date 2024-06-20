@@ -3,7 +3,7 @@ import { FileProvider } from "@/context/FileContext";
 import "./globals.css";
 import styles from "./main.module.css";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import bgIllustration from "../public/bg-illustration.svg";
 import Image from "next/image";
 import { LoaderContextType, LoaderProvider } from "@/context/LoaderContext";
@@ -28,8 +28,9 @@ export default function MainContainer({
     visible: false,
     icon: "bi bi-info",
   });
+  const [statusLoaded, setStatusLoaded] = useState(false);
   useEffect(() => {
-    console.log("Page loaded (MAIN)");
+    console.log("Page loaded (MAIN)", process.env.NODE_ENV);
     document.body.style.setProperty("--x", "0px");
     document.body.style.setProperty("--y", "0px");
     document.body.style.setProperty(
@@ -40,26 +41,34 @@ export default function MainContainer({
         rgba(175, 224, 228, 1)
       )`
     );
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/server/status`)
-      .then(async (res) => {
-        if (res.status != 200) {
+    if (!statusLoaded) {
+      setLoader!({ text: "Awaking Server", visible: true });
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/server/status`)
+        .then(async (res) => {
+          setStatusLoaded(true);
+          if (res.status != 200) {
+            router.push("/offline");
+            setLoader!({ text: "", visible: false });
+          } else {
+            var data = await res.json();
+            console.log(data);
+            if (data.status != "success" || data.data.status == false) {
+              setLoader!({ text: "", visible: false });
+              router.push("/offline");
+            } else {
+              if (window.location.pathname.includes("offline")) {
+                router.push("/");
+              }
+              setLoader!({ text: "", visible: false });
+            }
+          }
+        })
+        .catch(() => {
+          setStatusLoaded(true);
           router.push("/offline");
           setLoader!({ text: "", visible: false });
-        } else {
-          var data = await res.json();
-          console.log(data);
-          if (data.status != "success" || data.data.status == false) {
-            setLoader!({ text: "", visible: false });
-            router.push("/offline");
-          } else {
-            setLoader!({ text: "", visible: false });
-          }
-        }
-      })
-      .catch(() => {
-        router.push("/offline");
-        setLoader!({ text: "", visible: false });
-      });
+        });
+    }
   }, []);
   const [file, setFile] = useState<File | null>(null);
   const mainMouseMove = (event: React.MouseEvent) => {
@@ -94,9 +103,14 @@ export default function MainContainer({
     setLoader!({ text: "Loading...", visible: true });
     mainDragEnd();
     if (event.dataTransfer.files && event.dataTransfer.files.length > 0) {
-      if (event.dataTransfer.files[0].size > 50000000) {
+      if (event.dataTransfer.files[0].size > (50 * 1024 * 1024)) {
         setLoader!({ text: "", visible: false });
-        showPopup(setPopup!, "File size is too large (Maximum 50 MB)", "bi bi-x-circle", 2000);
+        showPopup(
+          setPopup!,
+          "File size is too large (Maximum 50 MB)",
+          "bi bi-x-circle",
+          2000
+        );
         return;
       }
       setFile!(event.dataTransfer.files[0]);

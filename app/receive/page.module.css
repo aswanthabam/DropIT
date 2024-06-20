@@ -122,6 +122,7 @@
         justify-content: center;
         flex-direction: column;
         height: 100%;
+        text-align: center;
         gap: 1rem;
         padding: 1rem;
         border-radius: 0.5rem;
@@ -131,6 +132,24 @@
         .previewIcon {
           font-size: 4rem;
           color: #999;
+        }
+        .progressContainer {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.7rem;
+          flex-direction: column;
+          width: 100%;
+
+          .progress {
+            width: calc(100% - 4rem);
+          }
+
+          .progressText {
+            color: #29845e;
+            font-size: 0.8rem;
+            font-weight: 600;
+          }
         }
         .previewText {
           color: #999;
@@ -144,6 +163,9 @@
           color: #333;
           text-align: center;
           word-break: break-all;
+        }
+        .type {
+          text-align: center;
         }
         .size {
           font-size: 1rem;

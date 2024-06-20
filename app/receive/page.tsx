@@ -1,12 +1,33 @@
 "use client";
-import { use, useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import styles from "./page.module.css";
-import MainContainer from "../main";
-import { FileContext } from "@/context/FileContext";
-import { useRouter } from "next/navigation";
-import { LoaderContext, LoaderContextType } from "@/context/LoaderContext";
+import { LoaderContext } from "@/context/LoaderContext";
 import Link from "next/link";
 import { PopupContext, showPopup } from "@/context/PopupContext";
+
+type ProgressType = {
+  buffering: boolean;
+  percent: number;
+  total: number;
+  loaded: number;
+};
+
+const formatBytes = (bytes: number): string => {
+  if (bytes === 0) return "0 KB";
+  const i = Math.floor(Math.log(bytes) / Math.log(1024));
+  return `${(bytes / Math.pow(1024, i)).toFixed(2)}`;
+};
+
+const progressBytes = (progress: ProgressType) => {
+  const sizes = ["KB", "MB"];
+  if (progress.total <= 1024) {
+    return `${progress.loaded} / ${progress.total} B`;
+  }
+  const i = Math.floor(Math.log(progress.total) / Math.log(1024));
+  return `${formatBytes(progress.loaded)} / ${formatBytes(progress.total)} ${
+    i == 1 || i == 2 ? sizes[i - 1] : sizes[0]
+  }`;
+};
 
 export default function Share() {
   const { setPopup } = useContext(PopupContext);
@@ -14,10 +35,15 @@ export default function Share() {
   const [fileSize, setFileSize] = useState("0MB");
   const [code, setCode] = useState<string>("");
   const inputRef = useRef<HTMLInputElement>(null);
-  const progressRef = useRef<HTMLProgressElement>(null);
   const { setLoader } = useContext(LoaderContext);
   const [fileInfo, setFileInfo] = useState<FileInfo | null>(null);
   const [downloading, setDownloading] = useState(false);
+  const [progress, setProgress] = useState<ProgressType>({
+    buffering: false,
+    percent: 0,
+    total: 0,
+    loaded: 0,
+  });
   type FileInfo = {
     name: string;
     type: string;
@@ -25,7 +51,6 @@ export default function Share() {
     uploadedBy: string | null;
     fileUrl: string;
   };
-  const router = useRouter();
   useEffect(() => {
     console.log("Page loaded (RECEIVE)");
     inputRef.current?.focus();
@@ -146,32 +171,37 @@ export default function Share() {
     }
     var url = `${process.env.NEXT_PUBLIC_DOWNLOAD_URL}${fileInfo.fileUrl}`;
     setDownloading(true);
+    setProgress({ buffering: true, percent: 0, total: 0, loaded: 0 });
     setCode("");
     fetch(url)
       .then((response) => {
         if (!response.ok) {
-          throw new Error("Network response was not ok");
+          return Promise.reject("Download failed");
         }
         const contentLength = response.headers.get("Content-Length");
         if (!contentLength) {
-          throw new Error("Content-Length header is missing");
+          return Promise.reject("Download failed");
         }
         const total = parseInt(contentLength, 10);
-        console.log("Total size:", total);
         let loaded = 0;
+        setProgress({ buffering: false, percent: 0, total, loaded });
+        showPopup(setPopup!, "Downloading ...", "bi bi-download", 1000);
         const reader = response.body!.getReader();
         const stream = new ReadableStream({
           start(controller) {
             function push() {
               reader.read().then(({ done, value }) => {
-                console.log("Read chunk:", value);
-                console.log("Done:", done);
                 if (done) {
                   controller.close();
                   return;
                 }
                 loaded += value.length;
-                progressRef.current!.value = (loaded / total) * 100;
+                setProgress({
+                  buffering: false,
+                  percent: (loaded / total) * 100,
+                  total,
+                  loaded,
+                });
                 controller.enqueue(value);
                 push();
               });
@@ -184,7 +214,7 @@ export default function Share() {
       })
       .then((response) => response.blob())
       .then((blob) => {
-        console.log("Download complete:", blob);
+        setProgress({ ...progress, buffering: true });
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.style.display = "none";
@@ -193,10 +223,17 @@ export default function Share() {
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
+        showPopup(setPopup!, "Downloaded", "bi bi-check2");
+        setFileInfo(null);
+        setFileSize("0MB");
+        setFileIcon("bi bi-filetype-");
+        setCode("");
         setDownloading(false);
       })
       .catch((error) => {
         console.error("Download failed:", error);
+        showPopup(setPopup!, "Download failed", "bi bi-exclamation-triangle");
+        setDownloading(false);
       });
   };
   return (
@@ -282,12 +319,16 @@ export default function Share() {
                   </span>
                 </span>
                 {downloading && (
-                  <progress
-                    ref={progressRef}
-                    className={styles.progress}
-                    value="0"
-                    max="100"
-                  ></progress>
+                  <div className={styles.progressContainer}>
+                    <progress
+                      className={styles.progress}
+                      value={progress.buffering ? undefined : progress.loaded}
+                      max={progress.total}
+                    ></progress>
+                    <span className={styles.progressText}>
+                      {progressBytes(progress)}
+                    </span>
+                  </div>
                 )}
                 <div className={styles.buttonContainer}>
                   <button onClick={downloadFile} className={styles.button}>
