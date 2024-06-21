@@ -104,11 +104,11 @@ export default function MainContainer({
     setLoader!({ text: "Loading...", visible: true });
     mainDragEnd();
     if (event.dataTransfer.files && event.dataTransfer.files.length > 0) {
-      if (event.dataTransfer.files[0].size > (50 * 1024 * 1024)) {
+      if (event.dataTransfer.files[0].size > (30 * 1024 * 1024)) {
         setLoader!({ text: "", visible: false });
         showPopup(
           setPopup!,
-          "File size is too large (Maximum 50 MB)",
+          "File size is too large (Maximum 30 MB)",
           "bi bi-x-circle",
           2000
         );
