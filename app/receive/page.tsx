@@ -184,7 +184,6 @@ export default function Share() {
         }
         const total = parseInt(contentLength, 10);
         let loaded = 0;
-        setProgress({ buffering: false, percent: 0, total, loaded });
         showPopup(setPopup!, "Downloading ...", "bi bi-download", 1000);
         const reader = response.body!.getReader();
         const stream = new ReadableStream({
@@ -192,6 +191,12 @@ export default function Share() {
             function push() {
               reader.read().then(({ done, value }) => {
                 if (done) {
+                  setProgress({
+                    buffering: true,
+                    percent: 100,
+                    total,
+                    loaded,
+                  });
                   controller.close();
                   return;
                 }
@@ -214,7 +219,6 @@ export default function Share() {
       })
       .then((response) => response.blob())
       .then((blob) => {
-        setProgress({ ...progress, buffering: true });
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.style.display = "none";
