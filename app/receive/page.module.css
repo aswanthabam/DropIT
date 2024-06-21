@@ -258,6 +258,11 @@
       &:hover {
         background: #66a63f;
       }
+
+      &.inactive {
+        background: #636363;
+        cursor: not-allowed;
+      }
     }
   }
 }

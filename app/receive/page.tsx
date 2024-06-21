@@ -58,7 +58,10 @@ export default function Receive() {
     console.log("Page loaded (RECEIVE)");
     inputRef.current?.focus();
     if (searchParams.has("code")) {
-      if (searchParams.get("code")!.length != 7 || !/^[A-Z]\d{0,6}$/.test(searchParams.get("code")!)) {
+      if (
+        searchParams.get("code")!.length != 7 ||
+        !/^[A-Z]\d{0,6}$/.test(searchParams.get("code")!)
+      ) {
         showPopup(setPopup!, "Invalid Code", "bi bi-exclamation-triangle");
         router.push("/");
         return;
@@ -182,6 +185,9 @@ export default function Receive() {
   };
 
   const downloadFile = () => {
+    if (downloading) {
+      return;
+    }
     if (fileInfo == null) {
       return;
     }
@@ -352,7 +358,7 @@ export default function Receive() {
                   </div>
                 )}
                 <div className={styles.buttonContainer}>
-                  <button onClick={downloadFile} className={styles.button}>
+                  <button onClick={downloadFile} className={styles.button + (downloading ? (" "+styles.inactive) : '')}>
                     Download It
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
