@@ -4,6 +4,7 @@ import styles from "./page.module.css";
 import { LoaderContext } from "@/context/LoaderContext";
 import Link from "next/link";
 import { PopupContext, showPopup } from "@/context/PopupContext";
+import { useSearchParams, useRouter } from "next/navigation";
 
 type ProgressType = {
   buffering: boolean;
@@ -29,7 +30,7 @@ const progressBytes = (progress: ProgressType) => {
   }`;
 };
 
-export default function Share() {
+export default function Receive() {
   const { setPopup } = useContext(PopupContext);
   const [fileIcon, setFileIcon] = useState("bi bi-filetype-");
   const [fileSize, setFileSize] = useState("0MB");
@@ -38,6 +39,8 @@ export default function Share() {
   const { setLoader } = useContext(LoaderContext);
   const [fileInfo, setFileInfo] = useState<FileInfo | null>(null);
   const [downloading, setDownloading] = useState(false);
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const [progress, setProgress] = useState<ProgressType>({
     buffering: false,
     percent: 0,
@@ -54,7 +57,23 @@ export default function Share() {
   useEffect(() => {
     console.log("Page loaded (RECEIVE)");
     inputRef.current?.focus();
-    setCode("");
+    if (searchParams.has("code")) {
+      if (
+        searchParams.get("code")!.length != 7 ||
+        !/^[A-Z]\d{0,6}$/.test(searchParams.get("code")!)
+      ) {
+        showPopup(setPopup!, "Invalid Code", "bi bi-exclamation-triangle");
+        router.push("/");
+        return;
+      }
+      setCode(searchParams.get("code")!);
+      for (var i = 0; i < 7; i++) {
+        document
+          .getElementsByClassName(styles.codeChar)
+          [i != 0 ? i + 1 : i].classList.remove(styles.inactive);
+      }
+      viewFileInfo();
+    }
     setLoader!({ text: "", visible: false });
   }, [setLoader]);
 
@@ -166,6 +185,9 @@ export default function Share() {
   };
 
   const downloadFile = () => {
+    if (downloading) {
+      return;
+    }
     if (fileInfo == null) {
       return;
     }
@@ -184,7 +206,6 @@ export default function Share() {
         }
         const total = parseInt(contentLength, 10);
         let loaded = 0;
-        setProgress({ buffering: false, percent: 0, total, loaded });
         showPopup(setPopup!, "Downloading ...", "bi bi-download", 1000);
         const reader = response.body!.getReader();
         const stream = new ReadableStream({
@@ -192,6 +213,12 @@ export default function Share() {
             function push() {
               reader.read().then(({ done, value }) => {
                 if (done) {
+                  setProgress({
+                    buffering: true,
+                    percent: 100,
+                    total,
+                    loaded,
+                  });
                   controller.close();
                   return;
                 }
@@ -331,7 +358,7 @@ export default function Share() {
                   </div>
                 )}
                 <div className={styles.buttonContainer}>
-                  <button onClick={downloadFile} className={styles.button}>
+                  <button onClick={downloadFile} className={styles.button + (downloading ? (" "+styles.inactive) : '')}>
                     Download It
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

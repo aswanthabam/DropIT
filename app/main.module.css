@@ -8,6 +8,7 @@
     align-items: center;
     justify-content: start;
     max-width: 70%;
+    width: fit-content;
     height: auto;
     padding: 1rem;
     bottom: 0;
@@ -43,6 +44,7 @@
       font-weight: 600;
       color: #222;
       background: transparent;
+      word-break: break-all;
     }
   }
   .loader {
@@ -224,7 +226,8 @@
 @media only screen and (max-width: 728px) {
   .main {
     .popup {
-      max-width: calc(100% - 3rem);
+      max-width: calc(100% - 1rem);
+      width: calc(100% - 3rem);
     }
     .bg {
       background-size: 190%;

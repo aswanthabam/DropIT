@@ -5,6 +5,7 @@ import MainContainer from "./main";
 import { FileContext } from "@/context/FileContext";
 import { useRouter } from "next/navigation";
 import { LoaderContext } from "@/context/LoaderContext";
+import { PopupContext, showPopup } from "@/context/PopupContext";
 
 export default function Home() {
   useEffect(() => {
@@ -12,6 +13,7 @@ export default function Home() {
   }, []);
   const router = useRouter();
   const { setLoader } = useContext(LoaderContext);
+  const { setPopup } = useContext(PopupContext);
   const fileContext = useContext(FileContext);
   const filePicRef = useRef<HTMLInputElement>(null);
   return (
@@ -53,6 +55,16 @@ export default function Home() {
           onChange={(e) => {
             const file = e.target.files?.[0];
             if (file) {
+              if (file.size > 30 * 1024 * 1024) {
+                setLoader!({ text: "", visible: false });
+                showPopup(
+                  setPopup!,
+                  "File size is too large (Maximum 30 MB)",
+                  "bi bi-x-circle",
+                  2000
+                );
+                return;
+              }
               setLoader!({ text: "", visible: true });
               fileContext.setFile!(file);
               router.push("/share");
