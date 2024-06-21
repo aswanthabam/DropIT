@@ -58,7 +58,7 @@ export default function Share() {
           file_name: file.name,
           file_size: fileSize.toString(),
           uploaded_by: name,
-          content_type: file.type,
+          content_type: file.type == null || file.type.length <= 1 ? 'application/octet-stream' : file.type,
           usage_limit: usageCount.toString(),
         }),
       });
