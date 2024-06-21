@@ -31,14 +31,25 @@ export default function MainContainer({
   const [statusLoaded, setStatusLoaded] = useState(false);
 
   useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key == "Escape") {
+        router.push("/");
+      } else if (!window.location.pathname.includes("receive") && !window.location.pathname.includes("share")) {
+        if (event.key == "r")
+          router.push("/receive");
+      }
+    }
+    window.addEventListener("keydown", handleKeyDown);
+}, []);
+
+  useEffect(() => {
     console.log("Page loaded (MAIN)", process.env.NODE_ENV);
     const handlePaste = (event: React.ClipboardEvent) => {
       if (window.location.pathname.includes("receive")) return;
       event.clipboardData?.items[0].getAsString((text) => {
         navigator.clipboard.readText().then((text) => {
           console.log(text);
-          if (text[1] == "-") 
-            text = text[0]+text.slice(2);
+          if (text[1] == "-") text = text[0] + text.slice(2);
           if (text.length > 8 || !/^[A-Z]\d{0,6}$/.test(text)) return;
           router.push(`/receive/?code=${text}`);
         });
