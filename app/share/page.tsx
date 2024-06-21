@@ -176,6 +176,10 @@ export default function Share() {
             <h1 className={styles.titleUnderlined}>Your Code</h1>
             <h2
               onClick={() => {
+                if(!navigator.clipboard) {
+                  showPopup(setPopup!, "Failed to copy code", "bi bi-x-circle", 2000);
+                  return;
+                }
                 navigator.clipboard.writeText(code);
                 setCopied(true);
                 showPopup(setPopup!, "Copied", "bi bi-check-circle", 2000);
