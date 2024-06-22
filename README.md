@@ -1,6 +1,4 @@
-![Banner Small (2)](https://github.com/aswanthabam/DropIT/assets/69764494/db22a5d9-7a0a-486b-86b0-162c8c63adae)
-
-# DropIT 🚀
+![Banner Small (3)](https://github.com/aswanthabam/DropIT/assets/69764494/7b68b76a-d737-406f-ae85-98033ff5cf2a)
 
 DropIT is a file sharing platform that makes file sharing across the internet simple and fast. With DropIT, you don't need an account to share a file of any type, and you can share it with anyone using a simple, memorable code similar to an OTP.
 
