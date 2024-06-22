@@ -7,6 +7,7 @@ import MainContainer from "./main";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(`${process.env.NEXT_PUBLIC_FR_DOMAIN}`),
   title: "DropIT",
   description:
     "DropIT is a fast and simple file-sharing platform. Share files without an account using a memorable code, ensuring easy and quick transfers across the internet.",
