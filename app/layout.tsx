@@ -7,7 +7,6 @@ import MainContainer from "./main";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(`${process.env.NEXT_PUBLIC_FR_DOMAIN}`),
   title: "DropIT",
   description:
     "DropIT is a fast and simple file-sharing platform. Share files without an account using a memorable code, ensuring easy and quick transfers across the internet.",
@@ -28,7 +27,7 @@ export const metadata: Metadata = {
     siteName: "DropIT",
     images: [
       {
-        url: "/banner.png",
+        url: `${process.env.NEXT_PUBLIC_FR_DOMAIN}/banner.png`,
       },
     ],
   },
@@ -36,7 +35,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     site: "@_aswanthvc",
     creator: "@_aswanthvc",
-    images: "/banner.png",
+    images: `${process.env.NEXT_PUBLIC_FR_DOMAIN}/banner.png`,
   },
 };
 
