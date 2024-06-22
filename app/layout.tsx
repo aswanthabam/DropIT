@@ -3,7 +3,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Topbar } from "@/components/Topbar";
 import MainContainer from "./main";
-import banner from '../public/banner.png';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,10 +21,10 @@ export const metadata: Metadata = {
     description: "DropIT is a fast and simple file-sharing platform. Share files without an account using a memorable code, ensuring easy and quick transfers across the internet.",
     siteName: "DropIT",
     images: [{
-      url: banner.src,
+      url: '/banner.png',
     }],
   },
-  twitter: { card: "summary_large_image", site: "@_aswanthvc", creator: "@_aswanthvc", "images": banner.src }
+  twitter: { card: "summary_large_image", site: "@_aswanthvc", creator: "@_aswanthvc", "images": '/banner.png'l̥ }
 };
 
 export default function RootLayout({
