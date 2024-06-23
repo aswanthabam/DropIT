@@ -3,7 +3,8 @@
   height: fit-content;
   .howItWorks {
     width: 100%;
-    height: 100vh;
+    height: calc(100vh - 0px);
+    padding-top: 50px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -43,6 +44,8 @@
       .videoFrame {
         width: 70vw;
         height: 39.375vw;
+        max-width: 720px;
+        max-height: 422px;
       }
     }
   }
