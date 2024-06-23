@@ -59,24 +59,26 @@ export function Topbar() {
           >
             How It Works
           </Link>
-          <Link
+          <a
             onClick={() => {
               setLocChange(!locChange);
             }}
             className={styles.link}
-            href="/#contact"
+            href="https://aswanthvc-dev.web.app/contact"
+            target="_blank"
           >
-            Contact
-          </Link>
-          <Link
+            Get in Touch
+          </a>
+          <a
             onClick={() => {
               setLocChange(!locChange);
             }}
             className={styles.link}
-            href="/#faq"
+            href="https://github.com/aswanthabam/dropit"
+            target="_blank"
           >
-            FAQ
-          </Link>
+            Github
+          </a>
         </div>
       </div>
     </div>
