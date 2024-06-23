@@ -70,9 +70,9 @@ a {
 
 .svg-elem-1 {
   -webkit-animation: animate-svg-stroke-1 1s cubic-bezier(0.47, 0, 0.745, 0.715)
-      0s both;
+    0s both;
   animation: animate-svg-stroke-1 1s cubic-bezier(0.47, 0, 0.745, 0.715) 0s both;
-    animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
 }
 
 /* Handle */
@@ -101,6 +101,7 @@ body {
   max-width: 100vw;
   min-height: 100%;
   overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 
 /* @media (prefers-color-scheme: dark) { */
