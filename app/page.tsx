@@ -82,7 +82,7 @@ export default function Home() {
         <div className={styles.video}>
           <iframe
             className={styles.videoFrame}
-            src="https://www.youtube.com/embed/2TRvBa8tLMQ?autoplay=1&loop=1&modestbranding=1&rel=0&iv_load_policy=3&color=white&controls=0&disablekb=1&playlist=2TRvBa8tLMQ"
+            src="https://www.youtube-nocookie.com/embed/2TRvBa8tLMQ?autoplay=1&loop=1&modestbranding=1&rel=0&iv_load_policy=3&color=white&controls=0&disablekb=1&playlist=2TRvBa8tLMQ"
             title="Drop IT - How it works?"
             frameBorder="0"
             allowFullScreen
