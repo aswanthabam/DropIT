@@ -79,6 +79,17 @@ export function Topbar() {
           >
             Github
           </a>
+          <a
+            href="https://www.producthunt.com/posts/dropit-0f956d64-4e7a-44ad-8f9b-6dc143b16a0c?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-dropit&#0045;0f956d64&#0045;4e7a&#0045;44ad&#0045;8f9b&#0045;6dc143b16a0c"
+            target="_blank"
+            className={styles.phBadge}
+          >
+            <img
+              src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=469819&theme=light"
+              alt="DropIT - Instant&#0032;File&#0032;Sharing&#0032;Platform | Product Hunt"
+              className={styles.phBadgeImg}
+            />
+          </a>
         </div>
       </div>
     </div>

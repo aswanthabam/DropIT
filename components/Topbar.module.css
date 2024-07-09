@@ -43,7 +43,16 @@
     }
     .menu {
       display: flex;
+      align-items: center;
       gap: 1rem;
+      .phBadge {
+        .phBadgeImg {
+          height: 30px;
+          width: auto;
+          padding: 0;
+          margin: 0;
+        }
+      }
 
       .link {
         text-decoration: none;
