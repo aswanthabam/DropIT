@@ -198,11 +198,11 @@ export default function Receive() {
     fetch(url)
       .then((response) => {
         if (!response.ok) {
-          return Promise.reject("Download failed");
+          return Promise.reject("Download Failed");
         }
-        const contentLength = response.headers.get("Content-Length");
+        const contentLength = response.headers.get("X-File-Size");
         if (!contentLength) {
-          return Promise.reject("Download failed");
+          return Promise.reject("Download Failed!1");
         }
         const total = parseInt(contentLength, 10);
         let loaded = 0;
@@ -358,7 +358,12 @@ export default function Receive() {
                   </div>
                 )}
                 <div className={styles.buttonContainer}>
-                  <button onClick={downloadFile} className={styles.button + (downloading ? (" "+styles.inactive) : '')}>
+                  <button
+                    onClick={downloadFile}
+                    className={
+                      styles.button + (downloading ? " " + styles.inactive : "")
+                    }
+                  >
                     Download It
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
