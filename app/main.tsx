@@ -34,7 +34,7 @@ export default function MainContainer({
     if (captureVisit) return;
     captureVisit = true;
     fetch(
-      `${process.env.NEXT_PUBLIC_PRODUCT_ANALYZER_URL}/product/visit/dropit`
+      `${process.env.NEXT_PUBLIC_PRODUCT_ANALYZER_URL}/api/product/dropit/visit`
     )
       .then(async () => {
         console.log("CAPTURED!:)");
