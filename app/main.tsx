@@ -3,7 +3,7 @@ import { FileProvider } from "@/context/FileContext";
 import "./globals.css";
 import styles from "./main.module.css";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import bgIllustration from "../public/bg-illustration.svg";
 import Image from "next/image";
 import { LoaderContextType, LoaderProvider } from "@/context/LoaderContext";
@@ -29,18 +29,33 @@ export default function MainContainer({
     icon: "bi bi-info",
   });
   const [statusLoaded, setStatusLoaded] = useState(false);
-
+  var captureVisit = false;
+  useEffect(() => {
+    if (captureVisit) return;
+    captureVisit = true;
+    fetch(
+      `${process.env.NEXT_PUBLIC_PRODUCT_ANALYZER_URL}/api/product/dropit/visit`
+    )
+      .then(async () => {
+        console.log("CAPTURED!:)");
+      })
+      .catch(() => {
+        console.log("FAILED CAPTUR!:(");
+      });
+  }, []);
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key == "Escape") {
         router.push("/");
-      } else if (!window.location.pathname.includes("receive") && !window.location.pathname.includes("share")) {
-        if (event.key == "r")
-          router.push("/receive");
+      } else if (
+        !window.location.pathname.includes("receive") &&
+        !window.location.pathname.includes("share")
+      ) {
+        if (event.key == "r") router.push("/receive");
       }
-    }
+    };
     window.addEventListener("keydown", handleKeyDown);
-}, []);
+  }, []);
 
   useEffect(() => {
     console.log("Page loaded (MAIN)", process.env.NODE_ENV);
