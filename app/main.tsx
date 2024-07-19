@@ -83,7 +83,6 @@ export default function MainContainer({
     );
     if (!statusLoaded) {
       setLoader!({ text: "Awaking Server", visible: true });
-      console.log(process.env);
       fetch(`${process.env.NEXT_PUBLIC_API_URL}/server/status`)
         .then(async (res) => {
           setStatusLoaded(true);
