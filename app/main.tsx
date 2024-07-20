@@ -35,8 +35,13 @@ export default function MainContainer({
   useEffect(() => {
     if (captureVisit) return;
     captureVisit = true;
+    const params = new URLSearchParams(window.location.search);
     fetch(
-      `${process.env.NEXT_PUBLIC_PRODUCT_ANALYZER_URL}/api/product/dropit/visit`
+      `${
+        process.env.NEXT_PUBLIC_PRODUCT_ANALYZER_URL
+      }/api/product/dropit/visit/?path=${window.location.pathname}&ref=${
+        params.get("ref") || ""
+      }`
     )
       .then(async () => {
         console.log("CAPTURED!:)");
