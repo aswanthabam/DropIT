@@ -104,8 +104,29 @@ body {
   scroll-behavior: smooth;
 }
 
-/* @media (prefers-color-scheme: dark) { */
-/* html {
-    color-scheme: dark;
+@keyframes rainbow-animation {
+  0% {
+    background-position: 0% 0%;
   }
-} */
+  100% {
+    background-position: 100% 0%;
+  }
+}
+
+.rainbow-text {
+  background: linear-gradient(
+    90deg,
+    #c62828,
+    #e64a19,
+    #fbc02d,
+    #388e3c,
+    #1976d2,
+    #8e24aa,
+    #d32f2f
+  );
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: rainbow-animation 8s linear infinite alternate;
+}

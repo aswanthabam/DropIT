@@ -1,0 +1,43 @@
+.popup {
+  width: 100%;
+  height: auto;
+  padding: 10px 100px;
+  background: #ffffffa0;
+  z-index: 100;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0px 0px 10px 0px #1d6f4ca0;
+  &.hidden {
+    display: none;
+  }
+  .content {
+    font-size: 14px;
+    .link {
+      text-decoration: underline;
+    }
+  }
+
+  .closeButton {
+    background: #9dffea;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 12px;
+    cursor: pointer;
+    color: #000;
+    font-weight: bold;
+  }
+}
+
+@media only screen and (max-width: 728px) {
+  .popup {
+    padding: 10px 20px;
+    .content {
+      font-size: 12px;
+    }
+  }
+}

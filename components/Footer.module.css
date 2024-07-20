@@ -1,0 +1,31 @@
+.footer {
+  width: 100%;
+  background: #ffffff90;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: #fff;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 10px;
+  .text {
+    padding: 10px;
+    text-align: center;
+    .link {
+      text-decoration: underline;
+      font-weight: bold;
+      color: inherit;
+    }
+  }
+  .links {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    .link {
+      font-size: 12px;
+      text-decoration: underline;
+      color: #00000090;
+    }
+  }
+}

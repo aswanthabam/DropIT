@@ -12,6 +12,8 @@ import {
   PopupProvider,
   showPopup,
 } from "@/context/PopupContext";
+import TermsPopup from "@/components/TermsPopup";
+import Footer from "@/components/Footer";
 
 export default function MainContainer({
   children,
@@ -82,6 +84,10 @@ export default function MainContainer({
       )`
     );
     if (!statusLoaded) {
+      if (window.location.pathname.includes("/terms-and-conditions")) {
+        setLoader({ text: "", visible: false });
+        return;
+      }
       setLoader!({ text: "Awaking Server", visible: true });
       fetch(`${process.env.NEXT_PUBLIC_API_URL}/server/status`)
         .then(async (res) => {
@@ -176,6 +182,7 @@ export default function MainContainer({
     <LoaderProvider loader={loader} setLoader={setLoader}>
       <FileProvider file={file} setFile={setFile}>
         <PopupProvider popup={popup} setPopup={setPopup}>
+          <TermsPopup />
           <main
             id="main"
             onDragOver={mainDragOver}
