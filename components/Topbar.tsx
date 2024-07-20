@@ -64,7 +64,7 @@ export function Topbar() {
               setLocChange(!locChange);
             }}
             className={styles.link}
-            href="https://aswanthvc-dev.web.app/contact"
+            href="https://aswanthvc-dev.web.app/contact?ref=dropit"
             target="_blank"
           >
             Get in Touch
