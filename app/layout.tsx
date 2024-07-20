@@ -4,6 +4,7 @@ import "./globals.css";
 import { Topbar } from "@/components/Topbar";
 import MainContainer from "./main";
 import TermsPopup from "@/components/TermsPopup";
+import Footer from "@/components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -55,7 +56,10 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <Topbar />
-        <MainContainer>{children}</MainContainer>
+        <MainContainer>
+          {children}
+          <Footer />
+        </MainContainer>
       </body>
     </html>
   );

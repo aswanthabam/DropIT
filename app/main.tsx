@@ -13,6 +13,7 @@ import {
   showPopup,
 } from "@/context/PopupContext";
 import TermsPopup from "@/components/TermsPopup";
+import Footer from "@/components/Footer";
 
 export default function MainContainer({
   children,
