@@ -58,7 +58,10 @@ export default function Share() {
           file_name: file.name,
           file_size: fileSize.toString(),
           uploaded_by: name,
-          content_type: file.type == null || file.type.length <= 1 ? 'application/octet-stream' : file.type,
+          content_type:
+            file.type == null || file.type.length <= 1
+              ? "application/octet-stream"
+              : file.type,
           usage_limit: usageCount.toString(),
         }),
       });
@@ -168,6 +171,16 @@ export default function Share() {
     });
   };
 
+  const copyLink = () => {
+    if (!navigator.clipboard) {
+      showPopup(setPopup!, "Failed to copy link", "bi bi-x-circle", 2000);
+      return;
+    }
+    navigator.clipboard.writeText(
+      `${process.env.NEXT_PUBLIC_FR_DOMAIN}/receive/?code=${code}`
+    );
+    showPopup(setPopup!, "Link copied", "bi bi-check-circle", 2000);
+  };
   return (
     <div className={styles.share}>
       {code != null ? (
@@ -176,8 +189,13 @@ export default function Share() {
             <h1 className={styles.titleUnderlined}>Your Code</h1>
             <h2
               onClick={() => {
-                if(!navigator.clipboard) {
-                  showPopup(setPopup!, "Failed to copy code", "bi bi-x-circle", 2000);
+                if (!navigator.clipboard) {
+                  showPopup(
+                    setPopup!,
+                    "Failed to copy code",
+                    "bi bi-x-circle",
+                    2000
+                  );
                   return;
                 }
                 navigator.clipboard.writeText(code);
@@ -207,6 +225,9 @@ export default function Share() {
                 )}
               </svg>
             </h2>
+            <button onClick={copyLink} className={styles.copyLink}>
+              <i className={"bi bi-link " + styles.icon}></i>Copy Link
+            </button>
             <p className={styles.info}>
               Share this code with anyone to download the file. The file will be
               deleted after it has been downloaded {usageCount} times.
