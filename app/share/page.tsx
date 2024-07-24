@@ -176,8 +176,18 @@ export default function Share() {
       showPopup(setPopup!, "Failed to copy link", "bi bi-x-circle", 2000);
       return;
     }
+    var formattedCode = code;
+    if (formattedCode == null) return;
+    if (formattedCode.length > 8) {
+      showPopup(setPopup!, "Failed to copy link", "bi bi-x-circle", 2000);
+      return;
+    }
+    if (formattedCode[1] == "-") {
+      formattedCode =
+        formattedCode.substring(0, 1) + formattedCode.substring(2);
+    }
     navigator.clipboard.writeText(
-      `${process.env.NEXT_PUBLIC_FR_DOMAIN}/receive/?code=${code}`
+      `${process.env.NEXT_PUBLIC_FR_DOMAIN}/receive/?code=${formattedCode}`
     );
     showPopup(setPopup!, "Link copied", "bi bi-check-circle", 2000);
   };
