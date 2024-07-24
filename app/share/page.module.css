@@ -24,6 +24,26 @@
       flex-direction: column;
       height: 100%;
       gap: 2rem;
+
+      .copyLink {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: #29845e;
+        outline: none;
+        border: none;
+        background: none;
+        cursor: pointer;
+        background: #70ffc130;
+        padding: 5px 20px;
+        border-radius: 10px;
+        .icon {
+          font-size: 15px;
+        }
+      }
       .titleUnderlined {
         display: block;
         position: relative;
@@ -33,7 +53,7 @@
           position: absolute;
           width: 70%;
           height: 5px;
-          background: #29845E;
+          background: #29845e;
           bottom: -5px;
           left: 50%;
           transform: translateX(-50%);
@@ -71,7 +91,6 @@
           &:hover {
             fill: #29845e;
           }
-        
         }
       }
       .info {
@@ -108,7 +127,6 @@
           color: #333;
           text-align: center;
           word-break: break-all;
-          
         }
         .size {
           font-size: 1rem;
