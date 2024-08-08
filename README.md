@@ -30,7 +30,7 @@ I set some limits for my product (for a reason). These limits are listed below:
 | Maximum file upload size | 30 MB 📂 |
 | Daily upload limit | 100 MB 📊 |
 | Maximum usage limit for a file | 20 📥 |
-| File expiration | In 10 days ⏰ |
+| File expiration | In 24 Hrs ⏰ |
 
 ## Tech Stack 🛠️
 
