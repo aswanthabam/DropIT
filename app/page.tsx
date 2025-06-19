@@ -57,11 +57,11 @@ export default function Home() {
             onChange={(e) => {
               const file = e.target.files?.[0];
               if (file) {
-                if (file.size > 30 * 1024 * 1024) {
+                if (file.size > 50 * 1024 * 1024) {
                   setLoader!({ text: "", visible: false });
                   showPopup(
                     setPopup!,
-                    "File size is too large (Maximum 30 MB)",
+                    "File size is too large (Maximum 50 MB)",
                     "bi bi-x-circle",
                     2000
                   );
